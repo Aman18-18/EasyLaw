@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "https://easylaw-production.up.railway.app";
 
 export async function submitIntakeForm(rawText: string) {
   const res = await fetch(`${BASE_URL}/api/module1/intake`, {

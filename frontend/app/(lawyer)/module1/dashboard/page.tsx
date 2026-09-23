@@ -40,7 +40,7 @@ export default function DashboardPage() {
       setLoading(false);
     });
 
-    const ws = new WebSocket("ws://localhost:8000/ws/dashboard");
+    const ws = new WebSocket("wss://easylaw-production.up.railway.app/ws/dashboard");
     ws.onmessage = (event) => {
       const msg = JSON.parse(event.data);
       if (msg.event === "NEW_CASE") {
