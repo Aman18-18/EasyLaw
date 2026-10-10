@@ -83,18 +83,24 @@ def get_all_cases():
         conn = get_connection()
         cursor = conn.cursor()
 
-        cursor.execute("SELECT * FROM cases ORDER BY created_at DESC")
-        rows = cursor.fetchall()
-
         columns = [
             "id", "full_name", "date_of_birth", "aadhar_last4",
             "address", "city", "state", "pin_code", "phone", "email",
             "case_type", "incident_date", "opposing_party",
             "claim_amount", "court_preference", "case_description",
-            "additional_entities", "created_at",
-            "fir_number", "fir_date", "police_station", "has_documents"
+            "fir_number", "fir_date", "police_station", "has_documents",
+            "additional_entities", "created_at"
         ]
-        cases = [dict(zip(columns, row)) for row in rows]
+        cols_str = ", ".join(columns)
+        cursor.execute(f"SELECT {cols_str} FROM cases ORDER BY created_at DESC")
+        rows = cursor.fetchall()
+
+        cases = []
+        for row in rows:
+            case = dict(zip(columns, row))
+            if case.get("created_at"):
+                case["created_at"] = str(case["created_at"])
+            cases.append(case)
 
         cursor.close()
         conn.close()

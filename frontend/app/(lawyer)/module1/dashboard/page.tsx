@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getAllCases } from "@/lib/api";
+import { getAllCases, getWebSocketUrl } from "@/lib/api";
 
 interface Case {
   id: number;
@@ -24,7 +24,7 @@ interface Case {
   fir_date?: string;
   police_station?: string;
   has_documents?: boolean;
-  additional_entities: any;
+  additional_entities?: Record<string, unknown> | null;
   created_at: string;
 }
 
@@ -40,7 +40,7 @@ export default function DashboardPage() {
       setLoading(false);
     });
 
-    const ws = new WebSocket("wss://easylaw-production.up.railway.app/ws/dashboard");
+    const ws = new WebSocket(getWebSocketUrl("/ws/dashboard"));
     ws.onmessage = (event) => {
       const msg = JSON.parse(event.data);
       if (msg.event === "NEW_CASE") {

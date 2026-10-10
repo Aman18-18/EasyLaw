@@ -60,8 +60,25 @@ def create_tables():
         ADD COLUMN IF NOT EXISTS has_documents BOOLEAN DEFAULT FALSE
     """)
 
+    # Module 2 — Meeting Notes table
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS meeting_notes (
+            id SERIAL PRIMARY KEY,
+            case_id INTEGER REFERENCES cases(id),
+            audio_filename VARCHAR(255),
+            transcript TEXT,
+            summary TEXT,
+            classified_sentences JSONB,
+            action_items JSONB,
+            decisions JSONB,
+            risk_flags JSONB,
+            dates_mentioned JSONB,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
     conn.commit()
     cursor.close()
     conn.close()
 
-    print("✅ Tables ready")
+    print("[OK] Tables ready")

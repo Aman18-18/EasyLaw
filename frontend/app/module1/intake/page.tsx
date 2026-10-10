@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { submitIntakeForm } from "@/lib/api";
 
 const CASE_TYPES = [
   "Property Dispute",
@@ -63,15 +64,10 @@ has_documents: false,
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("https://easylaw-production.up.railway.app/api/module1/intake", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      if (!res.ok) throw new Error("Failed");
+      await submitIntakeForm(form);
       setSubmitted(true);
-    } catch {
-      setError("Something went wrong. Please try again.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }

@@ -7,7 +7,10 @@ export default function SharePage() {
   const [intakeUrl, setIntakeUrl] = useState("");
 
   useEffect(() => {
-    setIntakeUrl(`${window.location.origin}/module1/intake`);
+    const timer = setTimeout(() => {
+      setIntakeUrl(`${window.location.origin}/module1/intake`);
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
